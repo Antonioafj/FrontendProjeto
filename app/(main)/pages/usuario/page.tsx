@@ -12,7 +12,6 @@ import { classNames } from 'primereact/utils';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Projeto } from '@/types';
 import { UsuarioService } from '@/service/UsuarioService';
-import { error } from 'console';
 
 const Usuario = () => {
     let usuarioVazio: Projeto.Usuario = {
@@ -124,9 +123,10 @@ const Usuario = () => {
 
     const deleteUsuario = () => {
         if(usuario.id){
-        usuarioService.excluir(usuario.id).then((response) => {
-                    setUsuario(usuarioVazio);
+        usuarioService.excluir(usuario.id)
+                    .then((response) => {
                     setDeleteUsuarioDialog(false);
+                    setUsuario(usuarioVazio);
                     setUsuarios([]);
                     toast.current?.show({
                     severity: 'success',
@@ -144,7 +144,7 @@ const Usuario = () => {
            });
         }   
     };
-
+ 
     const exportCSV = () => {
         dt.current?.exportCSV();
     };
@@ -159,14 +159,14 @@ const Usuario = () => {
            if(_usuario.id) {
               await usuarioService.excluir(_usuario.id);
             }    
-        })).then((reponse) => {
+        })).then((response) => {
             setUsuarios([]);
             setSelectedUsuarios([]);
-            setDeleteUsuarioDialog(false);
+            setDeleteUsuariosDialog(false);
             toast.current?.show({
                 severity: 'success',
-                summary: 'Sucesso',
-                detail: 'Usarios Deletatos Com Sucesso',
+                summary: 'Sucesso!',
+                detail: 'Usuários Deletatos Com Sucesso',
                 life: 3000
             });
         }).catch((error) => {
