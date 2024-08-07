@@ -5,5 +5,12 @@ declare namespace Projeto {
         login: string;
         senha: string;
         email: string;
-    };   
+    };  
+    
+    
+    type Recurso = {
+        id?: number;
+        nome: string;
+        chave: string;
+    }
 }
