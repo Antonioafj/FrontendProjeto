@@ -5,7 +5,7 @@ import { BaseService } from "./BaseService";
 export class PermissaoPerfilRecursoService extends BaseService {
 
     constructor(){
-        super("/permissao-perfil-service");
+        super("/permissao-perfil-recurso");
     }
 
 }

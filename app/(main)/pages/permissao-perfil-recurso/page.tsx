@@ -39,9 +39,9 @@ const PermissaoPerfilRecurso = () => {
     const toast = useRef<Toast>(null);
     const dt = useRef<DataTable<any>>(null);
     const permissaoPerfilRecursoService = useMemo(() => new PermissaoPerfilRecursoService(), []);
-    const usuarioService = useMemo(() => new UsuarioService(),[]);
+    const recursoService = useMemo(() => new RecursoService(), []);
     const perfilService = useMemo(() => new PerfilService(),[]);
-    const [usuarios, setUsuarios] = useState<Projeto.Usuario[]>([]);
+    const [recursos, setRecursos] = useState<Projeto.Recurso[]>([]);
     const [perfis, setPerfis] = useState<Projeto.Perfil[]>([]);
 
 
@@ -59,8 +59,8 @@ const PermissaoPerfilRecurso = () => {
 
     useEffect(() => {
         if(permissaoPerfilRecursoDialog){
-            usuarioService.listarTodos()
-            .then((reponse) => setUsuarios(reponse.data))
+            recursoService.listarTodos()
+            .then((reponse) => setRecursos(reponse.data))
             .catch(error=>{
                 console.log(error);
                 toast.current?.show({
@@ -71,7 +71,7 @@ const PermissaoPerfilRecurso = () => {
             });
             perfilService.listarTodos()
             .then((response) => setPerfis(response.data))
-            .catch(error =>{
+            .catch(error => {
                 console.log(error);
                 toast.current?.show({
                     severity: 'info',
@@ -80,7 +80,7 @@ const PermissaoPerfilRecurso = () => {
                 });
             });
         }    
-    },[permissaoPerfilRecursoDialog, perfilService, usuarioService]);
+    },[permissaoPerfilRecursoDialog, perfilService, recursoService]);
 
 
     const openNew = () => {
@@ -114,7 +114,7 @@ const PermissaoPerfilRecurso = () => {
                     toast.current?.show({
                         severity: 'info',
                         summary: 'Sucesso!',
-                        detail: 'permissão cadastrado com sucesso!'
+                        detail: 'permissão cadastrada com sucesso!'
                     });
                 }).catch((error) => {
                     console.log(error.data.message);
@@ -163,19 +163,19 @@ const PermissaoPerfilRecurso = () => {
         if(permissaoPerfilRecurso.id){
             permissaoPerfilRecursoService.excluir(permissaoPerfilRecurso.id)
                     .then((response) => {
-                    setDeletePermissaoPerfilRecursoDialog(false);
                     setPermissaoPerfilRecurso(permissaoPerfilRecursoVazio);
+                    setDeletePermissaoPerfilRecursoDialog(false);
                     setPermissaoPerfilRecursos(null);
                     toast.current?.show({
                     severity: 'success',
                     summary: 'Sucesso',
-                    detail: 'Permissãro Deletado com Sucesso!',
+                    detail: 'Permissão Deletada com Sucesso!',
                     life: 3000});
             }).catch((error) => {
                 toast.current?.show({
                     severity: 'error',
                     summary: 'Erro!',
-                    detail: 'Erro ao deletar o perfil usuario',
+                    detail: 'Erro ao deletar o perfil!',
                     life: 3000
                 
                 });   
@@ -188,7 +188,7 @@ const PermissaoPerfilRecurso = () => {
     };
 
     const confirmDeleteSelected = () => {
-        setDeletePermissaoPerfilRecursoDialog(true);
+        setDeletePermissaoPerfilRecursosDialog(true);
     };
 
     const deleteSelectedPermissaoPerfilRecursos = () => {
@@ -211,14 +211,14 @@ const PermissaoPerfilRecurso = () => {
             toast.current?.show({
                 severity: 'error',
                 summary: 'Erro',
-                detail: 'Erro ao deletar perfis usuario',
+                detail: 'Erro ao deletar perfis!',
                 life: 3000
             })
     });
 };
  
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
-        const val = (e.target && e.target.value) || ''
+        const val = (e.target && e.target.value) || '';
         setPermissaoPerfilRecurso(prevPermissaoPerfilRecurso =>({
             ...prevPermissaoPerfilRecurso,
             [name]: val,
@@ -344,7 +344,7 @@ const PermissaoPerfilRecurso = () => {
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} até {last} de {totalRecords} perfis"
                         globalFilter={globalFilter}
-                        emptyMessage="Nenhum perfil encontrado."
+                        emptyMessage="Nenhum permissão encontrada."
                         header={header}
                         responsiveLayout="scroll"
                     >
@@ -355,7 +355,7 @@ const PermissaoPerfilRecurso = () => {
                         <Column body={actionBodyTemplate} headerStyle={{ minWidth: '10rem' }}></Column>
                     </DataTable>
 
-                    <Dialog visible={permissaoPerfilRecursoDialog} style={{ width: '450px' }} header="Detalhes de perfil" modal className="p-fluid" footer={perfilDialogFooter} onHide={hideDialog}>
+                    <Dialog visible={permissaoPerfilRecursoDialog} style={{ width: '450px' }} header="Detalhes de perfil usuário" modal className="p-fluid" footer={perfilDialogFooter} onHide={hideDialog}>
                         
                         <div className="field">
                             <label htmlFor="perfil">Perfil</label>
@@ -365,8 +365,8 @@ const PermissaoPerfilRecurso = () => {
 
                         <div className="field">
                             <label htmlFor="perfil">Recurso</label>
-                            <Dropdown optionLabel="nome" value={permissaoPerfilRecurso.recurso} options={usuarios} filter onChange={(e: DropdownChangeEvent) => onSelectRecursoChange(e.value)} placeholder='Selecione um usuario...'/>
-                            {submitted && !permissaoPerfilRecurso.recurso && <small className="p-invalid">Perfil Usuario é obrigatorio.</small>}
+                            <Dropdown optionLabel="nome" value={permissaoPerfilRecurso.recurso} options={recursos} filter onChange={(e: DropdownChangeEvent) => onSelectRecursoChange(e.value)} placeholder='Selecione um usuario...'/>
+                            {submitted && !permissaoPerfilRecurso.recurso && <small className="p-invalid">Recurso é obrigatorio.</small>}
                         </div>
 
                     </Dialog>
