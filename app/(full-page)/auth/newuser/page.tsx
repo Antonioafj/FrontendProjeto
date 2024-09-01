@@ -22,16 +22,16 @@ const NewUserPage = () => {
         email: ''
     };
 
-
     const [usuario, setUsuario] =  useState<Projeto.Usuario>(usuarioVazio);
     const loginService = useMemo(() => new LoginService(), []);
-    const toast = useRef<Toast>(null);
 
     const { layoutConfig } = useContext(LayoutContext);
 
     const router = useRouter();
     const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
-    
+
+    const toast = useRef<Toast>(null);
+
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
         const val = (e.target && e.target.value) || '';
         let _usuario = { ...usuario };
