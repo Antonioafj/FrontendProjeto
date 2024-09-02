@@ -16,8 +16,6 @@ const LoginPage = () => {
     const [login, setLogin] = useState('');
     const [senha, setSenha] = useState('');
 
-    const [password, setPassword] = useState('');
-
     const [checked, setChecked] = useState(false);
     const { layoutConfig } = useContext(LayoutContext);
 
@@ -33,8 +31,9 @@ const LoginPage = () => {
             console.log("Sucesso");
             console.log(response.data.token);
 
-            localStorage.setItem('TOKEN_APLICACAO_FRINTEND', response.data.token);
-            router.push('/')
+            localStorage.setItem('TOKEN_APLICACAO_FRONTEND', response.data.token);
+
+            router.push('/');
         }).catch(() => {
 
             toast.current?.show({
@@ -42,6 +41,7 @@ const LoginPage = () => {
                 summary: 'Erro',
                 detail: 'Login ou Senha estão inválidos!'
             });
+             
             setLogin('');
             setSenha('');
         });

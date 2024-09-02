@@ -34,6 +34,7 @@ const NewUserPage = () => {
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
         const val = (e.target && e.target.value) || '';
+
         let _usuario = { ...usuario };
         _usuario[`${name}`] = val;
 
@@ -42,20 +43,21 @@ const NewUserPage = () => {
 
      const novoUsuario = () => {
         loginService.novoCadastro(usuario).then((response) => {
+
             setUsuario(usuarioVazio);
                     toast.current?.show({
                         severity: 'info',
                         summary: 'Sucesso!',
                         detail: 'Usuário cadastrado com sucesso!'
                     });
-        }).catch((error) => {
-            console.log(error.data.message);
+
+        }).catch(error => {
                     toast.current?.show({
                         severity:'error',
-                        summary: 'error',
-                        detail: 'Erro ao salvar!' + error.data.message
-            })
-        })
+                        summary: 'Erro!',
+                        detail: 'Erro ao cadastrar!'
+            });
+        });
      }
 
     return (
@@ -100,7 +102,7 @@ const NewUserPage = () => {
                             <label htmlFor="email" className="block text-900 text-xl font-medium mb-2">
                                 Email
                             </label>
-                            <InputText id="login" type="text" placeholder="Digite seu email" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} 
+                            <InputText id="email" type="text" placeholder="Digite seu email" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} 
                             value={usuario.email}
                             onChange={(e) => onInputChange(e, 'email')} />
                             
@@ -109,7 +111,7 @@ const NewUserPage = () => {
                                     Já tenho cadastro!
                                 </a>
                             </div>
-                            <Button label="Sign In" className="Efetuar Cadastro" onClick={() => novoUsuario  ()}></Button>
+                            <Button label="Efetuar Cadastro" className="Efetuar Cadastro" onClick={() => novoUsuario  ()}></Button>
                         </div>
                     </div>
                 </div>

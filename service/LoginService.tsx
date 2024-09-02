@@ -12,7 +12,7 @@ export class LoginService{
 
     login(login: String, senha: String){
         return axiosInstance.post("/auth/login",
-            {username: login, password: senha})
+            {username: login, password: senha});
     }
 
 }
