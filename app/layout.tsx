@@ -1,3 +1,4 @@
+
 'use client';
 import { LayoutProvider } from '../layout/context/layoutcontext';
 import { PrimeReactProvider } from 'primereact/api';
@@ -8,15 +9,17 @@ import '../styles/layout/layout.scss';
 import '../styles/demo/Demos.scss';
 import { useEffect, useState } from 'react';
 import LoginPage from './(full-page)/auth/login/page';
+import { usePathname } from 'next/navigation';
 
 interface RootLayoutProps {
     children: React.ReactNode;
 }
 
 const checkAuth = () => {
-    if(localStorage.getItem('TOKEN_APLICACAO_FRONTEND') != undefined){
+
+    if (localStorage.getItem('TOKEN_APLICACAO_FRONTEND') != undefined) {
         return true;
-    }else{
+    } else {
         return false;
     }
 }
@@ -25,12 +28,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
     const [pageLoaded, setPageLoaded] = useState(false);
     const [autenticado, setAutenticado] = useState(false);
+    const pathname = usePathname();
 
     useEffect(() => {
-        setAutenticado(checkAuth());
-        setPageLoaded(true);
-    }, []);
-
+        if(pathname.startsWith('/pages') || pathname == '/'){
+            setAutenticado(checkAuth());
+            setPageLoaded(true);
+        }else{
+            setAutenticado(true);
+            setPageLoaded(true);
+        }
+    }, [pathname]);
 
     return (
         <html lang="en" suppressHydrationWarning>
@@ -39,19 +47,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </head>
             <body>
                 {autenticado ?
-                <PrimeReactProvider>
-                    <LayoutProvider>{children}</LayoutProvider>
-                </PrimeReactProvider>
-                :
-                pageLoaded?
-                <PrimeReactProvider> 
-                        <LayoutProvider>
-                            <LoginPage/>
-                        </LayoutProvider>
+                    <PrimeReactProvider>
+                        <LayoutProvider>{children}</LayoutProvider>
                     </PrimeReactProvider>
                     :
-            null    
-        }       
+                    pageLoaded ?
+                        <PrimeReactProvider>
+                            <LayoutProvider>
+                                <LoginPage />
+                            </LayoutProvider>
+                        </PrimeReactProvider>
+                        :
+                        null
+                }
             </body>
         </html>
     );
